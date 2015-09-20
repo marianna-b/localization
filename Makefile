@@ -1,19 +1,20 @@
-CXX = clang++
+CXX = $(shell fltk-config --cxx)
+DEBUG = -g
 
-SDL_LIB = -L/usr/include/SDL -lSDL2 -Wl,-rpath=/usr/lib
-SDL_INCLUDE = -I/usr/include/SDL
+CXXFLAGS = $(shell fltk-config --use-gl --use-images --cxxflags ) -I.
+LDFLAGS = $(shell fltk-config --use-gl --use-images --ldflags )
+LDSTATIC = $(shell fltk-config --use-gl --use-images --ldstaticflags )
+LINK = $(CXX)
 
-CXXFLAGS = -Wall -c -std=c++11 $(SDL_INCLUDE)
-LDFLAGS = $(SDL_LIB)
-EXE = visualize
+TARGET = visualize
+OBJS = visualize.o
+SRCS = visualize.cpp
 
-all: $(EXE)
+all: $(TARGET)
 
-$(EXE): visualize.o
-	$(CXX) $< $(LDFLAGS) -o $@
+$(TARGET): $(OBJS)
+	$(LINK) -o $(TARGET) $(OBJS) $(LDFLAGS)
 
-visualize.o: visualize.cpp
-	$(CXX) $(CXXFLAGS) $< -o $@
-
-clean:
-	rm *.o && rm $(EXE)
+clean: $(TARGET) $(OBJS)
+	rm -f *.o 
+	rm -f $(TARGET) 

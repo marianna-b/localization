@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cstdio>
 #include <vector>
-#include <SDL2/SDL.h>
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Box.H>
 
 using namespace std;
 
@@ -36,7 +38,8 @@ struct segment {
                          
 };
 
-int main() {
+int main(int argc, char** argv) {
+  /*
   int n, a, b, c, d;
   vector<segment> v;
   cin >> n;
@@ -44,46 +47,15 @@ int main() {
     cin >> a >> b >> c >> d; 
     v.push_back(segment(a, b, c, d));
   }
-  
-  SDL_Window* wind = NULL;
-  if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
-    printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
-    return 1;
-  }
-  wind = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
-  if (wind == NULL) {
-    printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
-    return 1;
-  }
+  */
 
-  SDL_Renderer* rend = SDL_CreateRenderer( wind, -1, SDL_RENDERER_ACCELERATED );
-  if( rend == NULL ) {
-    printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
-    return 1;
-  }
-  SDL_Event e;
-
-  bool quit = false;
-  while( !quit ) {
-    while( SDL_PollEvent( &e ) != 0 ) {
-      if( e.type == SDL_QUIT ) {
-        quit = true;
-      }
-    }
-
-    SDL_SetRenderDrawColor(rend, 0xFF, 0xFF, 0xFF, 0xFF);        
-    SDL_RenderClear(rend);
-
-    SDL_SetRenderDrawColor(rend, 0x00, 0x00, 0x50, 0x50);        
-    for (auto i = 0; i < n; ++i) {
-      SDL_RenderDrawLine( rend, v[i].start.x, SCREEN_HEIGHT - v[i].start.y, v[i].end.x, SCREEN_HEIGHT - v[i].end.y);
-    }
-    SDL_RenderPresent(rend);
-  }
-
-  SDL_DestroyRenderer(rend);
-  SDL_DestroyWindow(wind);
-  SDL_Quit();
-
-  return 0;
+  Fl_Window *window = new Fl_Window(340,180);
+  Fl_Box *box = new Fl_Box(20,40,300,100,"Hello, World!");
+  box->box(FL_UP_BOX);
+  box->labelfont(FL_BOLD + FL_ITALIC);
+  box->labelsize(36);
+  box->labeltype(FL_SHADOW_LABEL);
+  window->end();
+  window->show(argc, argv);
+  return Fl::run();
 }
