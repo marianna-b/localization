@@ -4,6 +4,6 @@
 #include <vector>
 #include "trapezoid.h"
 
-int visualize(int, char**, std::vector <segment>, int);
+int visualize(int, char**, std::vector <segment>, double);
 
 #endif

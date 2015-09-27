@@ -1,10 +1,8 @@
-#include <trapezoid.h>
+#include "trapezoid.h"
 
-point::point() {
-  x = y = 0;
-}
+point::point() {}
 
-point::point(int a, int b) {
+point::point(double a, double b) {
   x = a;
   y = b;
 }
@@ -13,12 +11,9 @@ bool point::operator < (point a) {
   return (x < a.x) || ((x == a.x) && (y < a.y));
 }
 
-segment::segment() {
-  start = point();
-  end = point();
-}
+segment::segment() {}
 
-segment::segment(int a, int b, int c, int d) {
+segment::segment(double a, double b, double c, double d) {
   start = point(a, b);
   end = point(c, d);
   if (end < start) {
@@ -28,7 +23,7 @@ segment::segment(int a, int b, int c, int d) {
   }
 }
 
-int point::projection(segment b) {
+double point::projection(segment b) {
   if (x == b.start.x) {
     return b.start.y;
   } else if (x == b.end.x) {
@@ -37,6 +32,8 @@ int point::projection(segment b) {
     return b.start.y + ((b.end.y - b.start.y) * (x - b.start.x)) / (b.end.x - b.start.x);
   }
 }
+
+trapezoid::trapezoid(){};
 
 trapezoid::trapezoid(segment a, segment b, point c, point d) {
   top = a;

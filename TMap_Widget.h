@@ -11,6 +11,8 @@ struct TMap_Widget:Fl_Widget {
   void draw();
 
   std::vector <segment> segments;
+  trapezoid bounds;
+  double scale;
 };
 
 #endif

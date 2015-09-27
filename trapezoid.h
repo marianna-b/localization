@@ -6,39 +6,30 @@ struct trapezoid;
 
 struct point {
   point();
-  point(int, int);
+  point(double, double);
   bool operator < (point);
-  int projection(segment);
+  double projection(segment);
 
-private:
-  int x, y;
+  double x, y;
 
-  friend segment;
-  friend trapezoid;
 };
 
 struct segment {
   segment();
-  segment(int, int, int, int);
-  void draw();
+  segment(double, double, double, double);
+  void draw(double, point);
 
-private:
   point start, end;
-  friend point;
-  friend trapezoid;
 };
 
 
 struct trapezoid {
+  trapezoid();
   trapezoid(segment a, segment b, point c, point d);
-  void draw();
+  void draw(double, point);
 
-private:
   segment top, bottom;
   point left, right;
-  trapezoid *up, *down, *next, *prev;
-  friend point;
-  friend segment;
 };
 
 #endif 
