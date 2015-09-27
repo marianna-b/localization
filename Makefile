@@ -6,15 +6,15 @@ LDFLAGS = $(shell fltk-config --use-gl --use-images --ldflags )
 LDSTATIC = $(shell fltk-config --use-gl --use-images --ldstaticflags )
 LINK = $(CXX)
 
-TARGET = visualize
-OBJS = visualize.o
-SRCS = visualize.cpp
+TARGET = main 
+OBJS = main.o visualize.o trapezoid.o
+SRCS = visualize.cpp trapezoid.cpp main.cpp
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(LINK) -o $(TARGET) $(OBJS) $(LDFLAGS)
 
-clean: $(TARGET) $(OBJS)
+clean:
 	rm -f *.o 
 	rm -f $(TARGET) 
