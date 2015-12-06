@@ -8,10 +8,13 @@ struct point {
   point();
   point(double, double);
   bool operator < (point);
+  bool operator == (point);
   double projection(segment);
+  void set_segment(segment*);
+  segment* get_segment();
 
   double x, y;
-
+  segment* segm;
 };
 
 struct segment {
@@ -22,7 +25,6 @@ struct segment {
   point start, end;
 };
 
-
 struct trapezoid {
   trapezoid();
   trapezoid(segment a, segment b, point c, point d);
@@ -30,6 +32,10 @@ struct trapezoid {
 
   segment top, bottom;
   point left, right;
+  trapezoid *right_up, *right_down;
+  trapezoid *left_up, *left_down;
 };
+
+int left_turn(point, point, point);
 
 #endif 
