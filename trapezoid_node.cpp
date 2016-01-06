@@ -1,9 +1,9 @@
 #include "search.h"
 
-trapezoid_node::trapezoid_node(std::shared_ptr<trapezoid> n){
+trapezoid_node::trapezoid_node(trapezoid* n){
   t = n;
 }
-int trapezoid_node::get_direction(point, segment) {
+int trapezoid_node::get_direction(point, segment*) {
   return 0;
 }
 int trapezoid_node::get_direction(point) {
@@ -24,12 +24,12 @@ std::shared_ptr<node> trapezoid_node::get_right(){
 std::vector<std::shared_ptr<node>> trapezoid_node::get_previous(){
   return previous;
 }
-segment trapezoid_node::get_segment() {
-  return t.get()->top;
+segment* trapezoid_node::get_segment() {
+  return t->top;
 }
 void trapezoid_node::set_previous(std::shared_ptr<node> pr) {
   previous.push_back(pr);
 }
-trapezoid trapezoid_node::get_trapezoid() {
-  return *t.get();
+trapezoid* trapezoid_node::get_trapezoid() {
+  return t;
 }

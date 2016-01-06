@@ -17,24 +17,24 @@ void segment::draw(double scale, point begin) {
 }
 
 void trapezoid::draw(double scale, point begin) {
-  top.draw(scale, begin);
-  bottom.draw(scale, begin);
+  top->draw(scale, begin);
+  bottom->draw(scale, begin);
   
   int left_high_end = HEIGHT - 1;
   int left_low_end = 1;
   int right_high_end = HEIGHT - 1;
   int right_low_end = 1;
   
-  if (left.x >= top.start.x && left.x <= top.end.x) {
+  if (left.x >= top->start.x && left.x <= top->end.x) {
     left_high_end = left.projection(top);
   }
-  if (left.x >= bottom.start.x && left.x <= bottom.end.x) {
+  if (left.x >= bottom->start.x && left.x <= bottom->end.x) {
     left_low_end = left.projection(bottom);
   }
-  if (right.x >= top.start.x && right.x <= top.end.x) {
+  if (right.x >= top->start.x && right.x <= top->end.x) {
     right_high_end = right.projection(top);
   }
-  if (right.x >= bottom.start.x && right.x <= bottom.end.x) {
+  if (right.x >= bottom->start.x && right.x <= bottom->end.x) {
     right_low_end = right.projection(bottom);
   }
 
@@ -55,41 +55,11 @@ void TMap_Widget::draw() {
   segment a(100, 100, 400, 100);
   point c(250, 250);
   point d(300, 300);
-  trapezoid t(b, a, c, d);
+  trapezoid t(&b, &a, c, d);
 
 
   t.draw(scale, bounds.left);
   bounds.draw(scale, bounds.left);
-}
-
-trapezoid count_bounds(vector <segment> v, double gap) {
-  double max_x = 0, max_y = 0, min_x = 1400, min_y = 1400;
-
-  for (int i = 0; i < (int)v.size(); ++i) {
-    max_x = max(max_x, max(v[i].start.x, v[i].end.x));
-    min_x = min(min_x, min(v[i].start.x, v[i].end.x));
-    max_y = max(max_y, max(v[i].start.y, v[i].end.y));
-    min_y = min(min_y, min(v[i].start.y, v[i].end.y));
-  }
-
-  if (v.size() == 0) {
-    max_x = 1348;
-    max_y = 748;
-    min_x = 1;
-    min_y = 1;
-  } else {
-    min_x -= gap;
-    min_y -= gap;
-    max_x += gap;
-    max_y += gap;
-  }
-
-  segment top(min_x, max_y, max_x, max_y);
-  segment bottom(min_x, min_y, max_x, min_y);
-  point left(min_x, min_y);
-  point right(max_x, max_y);
-  
-  return trapezoid(top, bottom, left, right);
 }
 
 double calc_scale(trapezoid t) {
@@ -105,14 +75,14 @@ double calc_scale(trapezoid t) {
     
 }
 
-int visualize(int argc, char** argv, std::vector <segment> v, double gap) {
+int visualize(int argc, char** argv, std::vector <segment>& v, double gap, trapezoid bound) {
   Fl_Window *window = new Fl_Window(WIDTH, HEIGHT);
   TMap_Widget *tmap = new TMap_Widget(0, 0, WIDTH, HEIGHT);
   v.push_back(segment(200, 200, 300, 300));
   v.push_back(segment(100, 100, 400, 100));
 
-  tmap->segments = v;
-  tmap->bounds = count_bounds(v, gap);
+  tmap->segments = move(v);
+  tmap->bounds = bound;
   tmap->scale = calc_scale(tmap->bounds);
 
   window->end();

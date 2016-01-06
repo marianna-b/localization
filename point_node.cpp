@@ -1,15 +1,15 @@
 #include "search.h"
 
-point_node::point_node(std::shared_ptr<point> n){
+point_node::point_node(point n){
   p = n;
 }
 
-int point_node::get_direction(point a, segment b) {
+int point_node::get_direction(point a, segment* b) {
   return get_direction(a);
 }
 
 int point_node::get_direction(point a) {
-  if (a < *p.get())
+  if (a < p)
     return 1;
   else
     return -1;
@@ -35,8 +35,8 @@ std::vector<std::shared_ptr<node>> point_node::get_previous(){
   return previous; 
 }
 
-segment point_node::get_segment(){
-  return *p.get()->get_segment();
+segment* point_node::get_segment(){
+  return p.get_segment();
 }
 
 void point_node::set_previous(std::shared_ptr<node> prev){

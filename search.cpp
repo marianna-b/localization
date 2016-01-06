@@ -1,6 +1,6 @@
 #include "search.h"
 
-segment search_struct::find(point p){
+segment* search_struct::find(point p){
   std::shared_ptr<node> curr(root);
   int res;
   while ((res = curr.get()->get_direction(p)) != 0) {
@@ -11,7 +11,7 @@ segment search_struct::find(point p){
   }
   return curr.get()->get_segment();
 }
-trapezoid search_struct::find(point p, segment s){
+trapezoid* search_struct::find(point p, segment* s){
   std::shared_ptr<node> curr(root);
   int res;
   while ((res = curr.get()->get_direction(p, s)) != 0) {
@@ -21,7 +21,7 @@ trapezoid search_struct::find(point p, segment s){
       curr = curr.get()->get_right();
   }
   
-  std::shared_ptr<trapezoid_node> r = std::dynamic_pointer_cast<trapezoid_node>(curr);
-  return r.get()->get_trapezoid();
+  auto r = dynamic_cast<trapezoid_node*>(curr.get());
+  return r->get_trapezoid();
 }
 

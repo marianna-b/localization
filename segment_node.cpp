@@ -1,19 +1,19 @@
 #include "search.h"
 
-segment_node::segment_node(std::shared_ptr<segment> n){
-  s = n;
-}
 
-int segment_node::get_direction(point p, segment segm) {
-  int l = left_turn(s.get()->start, s.get()->end, p);
+segment_node::segment_node(segment* n)
+  : s(n) {}
+
+int segment_node::get_direction(point p, segment* segm) {
+  int l = left_turn(s->start, s->end, p);
   if (l != 0)
     return 0;
-  if (p == segm.start)
-    return left_turn(s.get()->start, s.get()->end, segm.end);
-  return left_turn(s.get()->start, s.get()->end, segm.start);
+  if (p == segm->start)
+    return left_turn(s->start, s->end, segm->end);
+  return left_turn(s->start, s->end, segm->start);
 }
 int segment_node::get_direction(point p ) {
-  return left_turn(s.get()->start, s.get()->end, p);
+  return left_turn(s->start, s->end, p);
 }
 void segment_node::set_left(std::shared_ptr<node> p) {
   up = p;
@@ -30,8 +30,8 @@ std::shared_ptr<node> segment_node::get_right() {
 std::vector<std::shared_ptr<node>> segment_node::get_previous() {
   return previous;
 }
-segment segment_node::get_segment() {
-  return *s.get();
+segment* segment_node::get_segment() {
+  return s;
 }
 void segment_node::set_previous(std::shared_ptr<node> prev) {
   if (previous.size() == 0)

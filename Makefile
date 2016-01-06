@@ -1,4 +1,4 @@
-CXX = $(shell fltk-config --cxx)
+#CXX = $(shell fltk-config --cxx)
 DEBUG = -g
 
 CXXFLAGS = -std=c++11 $(shell fltk-config --use-gl --use-images --cxxflags ) -I.
