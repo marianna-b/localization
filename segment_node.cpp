@@ -34,8 +34,5 @@ segment* segment_node::get_segment() {
   return s;
 }
 void segment_node::set_previous(std::shared_ptr<node> prev) {
-  if (previous.size() == 0)
     previous.push_back(prev);
-  else
-    previous[0] = prev;
 }

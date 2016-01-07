@@ -17,14 +17,6 @@ struct node {
   virtual void set_previous(std::shared_ptr<node>) = 0;
 };
 
-struct search_struct {
-  search_struct(std::shared_ptr<trapezoid>);
-  segment* find(point);
-  trapezoid* find(point, segment*);
-private:
-  std::shared_ptr<node> root;
-};
-
 struct point_node : node {
   point_node(point);
   int get_direction(point) override;
@@ -62,7 +54,7 @@ private:
 };
 
 struct trapezoid_node : node {
-  trapezoid_node(trapezoid*);
+  trapezoid_node(segment*, segment*, point, point);
   int get_direction(point) override;
   int get_direction(point, segment*) override;
   void set_left(std::shared_ptr<node>) override;
@@ -73,7 +65,11 @@ struct trapezoid_node : node {
   segment* get_segment() override;
   void set_previous(std::shared_ptr<node>) override;
   trapezoid* get_trapezoid();
+  ~trapezoid_node();
 private:
+  void add_segments();
+  void single_trap(trapezoid* t, segment* s);
+
   trapezoid* t;
   std::vector<std::shared_ptr<node>> previous;
 };

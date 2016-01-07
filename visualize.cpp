@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include "TMap_Widget.h"
+#include "trapezoid_map.h"
 #include <FL/Fl_Window.H>
 #include <FL/fl_draw.H>
 using namespace std;
@@ -75,13 +76,11 @@ double calc_scale(trapezoid t) {
     
 }
 
-int visualize(int argc, char** argv, std::vector <segment>& v, double gap, trapezoid bound) {
+int trapezoid_map::visualize() {
   Fl_Window *window = new Fl_Window(WIDTH, HEIGHT);
   TMap_Widget *tmap = new TMap_Widget(0, 0, WIDTH, HEIGHT);
-  v.push_back(segment(200, 200, 300, 300));
-  v.push_back(segment(100, 100, 400, 100));
 
-  tmap->segments = move(v);
+  tmap->segments = move(segments);
   tmap->bounds = bound;
   tmap->scale = calc_scale(tmap->bounds);
 

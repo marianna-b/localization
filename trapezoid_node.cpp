@@ -1,7 +1,11 @@
 #include "search.h"
 
-trapezoid_node::trapezoid_node(trapezoid* n){
-  t = n;
+
+trapezoid_node::trapezoid_node(segment *a, segment *b, point c, point d) {
+  t = new trapezoid(a, b, c, d);
+}
+trapezoid_node::~trapezoid_node(){
+  delete(t);
 }
 int trapezoid_node::get_direction(point, segment*) {
   return 0;

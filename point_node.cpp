@@ -40,8 +40,5 @@ segment* point_node::get_segment(){
 }
 
 void point_node::set_previous(std::shared_ptr<node> prev){
-  if (previous.size() == 0)
     previous.push_back(prev);
-  else
-    previous[0] = prev;
 }
