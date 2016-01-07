@@ -108,11 +108,11 @@ void trapezoid_map::add_segments(){
       continue;
     } 
 
-    auto up = shared_ptr<node>(new trapezoid_node(fst->top, s, s->start, fst->right));
-    auto down = shared_ptr<node>(new trapezoid_node(s, fst->bottom, s->start, fst->right));
-    auto mid = shared_ptr<node>(new segment_node(s));
-    auto left = shared_ptr<node>(new trapezoid_node(fst->top, fst->bottom, fst->left, s->start));
-    auto mid1 = shared_ptr<node>(new point_node(s->start));
+    auto up = shared_ptr<node>(new trapezoid_node(fst->top, &segments[i], segments[i].start, fst->right));
+    auto down = shared_ptr<node>(new trapezoid_node(&segments[i], fst->bottom, segments[i].start, fst->right));
+    auto mid = shared_ptr<node>(new segment_node(&segments[i]));
+    auto left = shared_ptr<node>(new trapezoid_node(fst->top, fst->bottom, fst->left, segments[i].start));
+    auto mid1 = shared_ptr<node>(new point_node(segments[i].start));
 
     mid.get()->set_left(up);
     up.get()->set_previous(mid);
@@ -120,7 +120,7 @@ void trapezoid_map::add_segments(){
     down.get()->set_previous(mid);
 
     auto old = link[fst];
-    if (s->start == fst->left) {
+    if (segments[i].start == fst->left) {
       set_link(old, mid, fst);
         //set previous
     } else {
@@ -133,22 +133,22 @@ void trapezoid_map::add_segments(){
     }
 
     if (left_turn(segments[i].start, segments[i].end, fst->right) > 0)
-      curr = fst.right_down;
+      curr = fst->right_down;
     else
-      curr = fst.right_up;
+      curr = fst->right_up;
 
     while (!(curr->right < segments[i].end || curr->right == segments[i].end)) {
-      auto curr_up;
-      auto curr_down;
-      mid = shared_ptr<node>(new segment_node(s));
+      shared_ptr<node> curr_up;
+      shared_ptr<node> curr_down;
+      mid = shared_ptr<node>(new segment_node(&segments[i]));
 
       if (left_turn(segments[i].start, segments[i].end, curr->left) > 0) {
-        curr_up = shared_ptr<node>(new trapezoid_node(curr->top, s, curr->left, curr->right));
+        curr_up = shared_ptr<node>(new trapezoid_node(curr->top, &segments[i], curr->left, curr->right));
         curr_down = down;
         //set previous
       } else {
         curr_up = up;
-        curr_down = shared_ptr<node>(new trapezoid_node(s, curr->bottom, curr->left, curr->right));
+        curr_down = shared_ptr<node>(new trapezoid_node(&segments[i], curr->bottom, curr->left, curr->right));
         //set previous
       }
 
@@ -161,36 +161,39 @@ void trapezoid_map::add_segments(){
       set_link(old, mid, curr);
 
       if (left_turn(segments[i].start, segments[i].end, curr->right) > 0)
-        curr = curr.right_down;
+        curr = curr->right_down;
       else
-        curr = curr.right_up;
+        curr = curr->right_up;
+      up = curr_up;
+      down = curr_down;
     }
 
 
-    up = shared_ptr<node>(new trapezoid_node(fst->top, s, s->start, fst->right));
-    down = shared_ptr<node>(new trapezoid_node(s, fst->bottom, s->start, fst->right));
-    mid = shared_ptr<node>(new segment_node(s));
-    auto right = shared_ptr<node>(new trapezoid_node(t->top, t->bottom, s->end, t->right));
-    auto mid2 = shared_ptr<node>(new point_node(s->end));
+    up = shared_ptr<node>(new trapezoid_node(curr->top, &segments[i], segments[i].start, curr->right));
+    down = shared_ptr<node>(new trapezoid_node(&segments[i], curr->bottom, segments[i].start, curr->right));
+    mid = shared_ptr<node>(new segment_node(&segments[i]));
+    auto right = shared_ptr<node>(new trapezoid_node(curr->top, curr->bottom, segments[i].end, curr->right));
+    auto mid2 = shared_ptr<node>(new point_node(segments[i].end));
 
     mid.get()->set_left(up);
     up.get()->set_previous(mid);
     mid.get()->set_right(down);
     down.get()->set_previous(mid);
 
-    auto old = link[t];
+    old = link[curr];
     
-    if (s->end == t->right) {
+    if (segments[i].end == curr->right) {
         //set previous
-      set_link(old, mid, t);
+      set_link(old, mid, curr);
 
     } else {
-      set_link(old, mid2, t);
+      set_link(old, mid2, curr);
       mid2.get()->set_left(mid);
       mid.get()->set_previous(mid2);
       mid2.get()->set_right(right);
       right.get()->set_previous(mid2);
     }
+  }
 }
 
 
