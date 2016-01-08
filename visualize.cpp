@@ -63,6 +63,19 @@ void TMap_Widget::draw() {
   bounds.draw(scale, bounds.left);
 }
 
+int TMap_Widget::handle(int event) {
+  switch(event) {
+  case FL_PUSH:
+    fl_color(FL_BLACK);
+    if (prev != 0) 
+      prev->draw(scale, bounds.left);
+    segment* s = map->find(point(Fl::event_x(), Fl::event_y()));
+    fl_color(FL_RED);
+    s->draw(scale, bounds.left);
+    return 1;
+  }
+}
+
 double calc_scale(trapezoid t) {
   double lx = t.right.x - t.left.x + 1.0;
   double ly = t.right.y - t.left.y + 1.0;
@@ -83,6 +96,7 @@ int trapezoid_map::visualize() {
   tmap->segments = move(segments);
   tmap->bounds = bound;
   tmap->scale = calc_scale(tmap->bounds);
+  tmap->map = this;
 
   window->end();
   window->show(argc, argv);
