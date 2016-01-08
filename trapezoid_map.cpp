@@ -45,6 +45,13 @@ void set_link(shared_ptr<node> old, shared_ptr<node> mid, trapezoid* t) {
   }
 }
 
+void set_children(shared_ptr<node> mid, shared_ptr<node> up, shared_ptr<node> ddown) {
+  mid.get()->set_left(up);
+  up.get()->set_previous(mid);
+  mid.get()->set_right(down);
+  down.get()->set_previous(mid);
+}
+
 void trapezoid_map::single_trap(trapezoid* t, segment* s) {
   auto up = shared_ptr<node>(new trapezoid_node(t->top, s, s->start, s->end));
   auto down = shared_ptr<node>(new trapezoid_node(s, t->bottom, s->end, s->end));
@@ -54,11 +61,7 @@ void trapezoid_map::single_trap(trapezoid* t, segment* s) {
   auto right = shared_ptr<node>(new trapezoid_node(t->top, t->bottom, s->end, t->right));
   auto mid2 = shared_ptr<node>(new point_node(s->end));
 
-  mid.get()->set_left(up);
-  up.get()->set_previous(mid);
-  mid.get()->set_right(down);
-  down.get()->set_previous(mid);
-
+  set_children(mid, up, down);
   auto old = link[t];
   
   if (s->start == t->left && s->end == t->right) {
@@ -66,101 +69,75 @@ void trapezoid_map::single_trap(trapezoid* t, segment* s) {
     set_link(old, mid, t);
     return;
   }
-
   set_link(old, mid1, t);
-
   if (s->start == t->left) {
-        //set previous
-    mid2.get()->set_left(mid);
-    mid.get()->set_previous(mid2);
-    mid2.get()->set_right(right);
-    right.get()->set_previous(mid2);
-
+    //set previous
+    set_children(mid2, mid, right);
   } else if (s->end == t->right) {
-        //set previous
-    mid1.get()->set_right(mid);
-    mid.get()->set_previous(mid1);
-    mid1.get()->set_left(left);
-    left.get()->set_previous(mid1);
-
+    //set previous
+    set_children(mid1, left, mid);
   } else {
-        //set previous
-    mid1.get()->set_left(left);
-    left.get()->set_previous(mid1);
-    mid1.get()->set_right(mid2);
-    mid2.get()->set_previous(mid1);
-
-    mid2.get()->set_left(mid);
-    mid.get()->set_previous(mid2);
-    mid2.get()->set_right(right);
-    right.get()->set_previous(mid2);
+    //set previous
+    set_children(mid1, left, mid2);
+    set_children(mid2, mid, right);
   }
 }
 
 
-void trapezoid_map::add_segments(){
-  for (int i = 0; i < segments.size(); ++i) {
-    trapezoid* fst = find(segments[i].start, &segments[i]);
+
+void trapezoid_map::add_segment(segment& s){
+    trapezoid* fst = find(s.start, &s);
     trapezoid* curr = fst;
 
-    if (fst->right < segments[i].end || fst->right == segments[i].end) {
-      single_trap(fst, &segments[i]);
-      continue;
+    if (fst->right < s.end || fst->right == s.end) {
+      single_trap(fst, &s);
+      return;
     } 
 
-    auto up = shared_ptr<node>(new trapezoid_node(fst->top, &segments[i], segments[i].start, fst->right));
-    auto down = shared_ptr<node>(new trapezoid_node(&segments[i], fst->bottom, segments[i].start, fst->right));
-    auto mid = shared_ptr<node>(new segment_node(&segments[i]));
-    auto left = shared_ptr<node>(new trapezoid_node(fst->top, fst->bottom, fst->left, segments[i].start));
-    auto mid1 = shared_ptr<node>(new point_node(segments[i].start));
+    auto up = shared_ptr<node>(new trapezoid_node(fst->top, &s, s.start, fst->right));
+    auto down = shared_ptr<node>(new trapezoid_node(&s, fst->bottom, s.start, fst->right));
+    auto mid = shared_ptr<node>(new segment_node(&s));
+    auto left = shared_ptr<node>(new trapezoid_node(fst->top, fst->bottom, fst->left, s.start));
+    auto mid1 = shared_ptr<node>(new point_node(s.start));
 
-    mid.get()->set_left(up);
-    up.get()->set_previous(mid);
-    mid.get()->set_right(down);
-    down.get()->set_previous(mid);
+    //set previous
+    set_children(mid, up, down);
 
     auto old = link[fst];
-    if (segments[i].start == fst->left) {
+    if (s.start == fst->left) {
       set_link(old, mid, fst);
-        //set previous
     } else {
       set_link(old, mid1, fst);
         //set previous
-      mid1.get()->set_right(mid);
-      mid.get()->set_previous(mid1);
-      mid1.get()->set_left(left);
-      left.get()->set_previous(mid1);
+      set_children(mid1, left, mid);
     }
 
-    if (left_turn(segments[i].start, segments[i].end, fst->right) > 0)
+    if (left_turn(s.start, s.end, fst->right) > 0)
       curr = fst->right_down;
     else
       curr = fst->right_up;
 
-    while (!(curr->right < segments[i].end || curr->right == segments[i].end)) {
+    while (!(curr->right < s.end || curr->right == s.end)) {
       shared_ptr<node> curr_up;
       shared_ptr<node> curr_down;
-      mid = shared_ptr<node>(new segment_node(&segments[i]));
+      mid = shared_ptr<node>(new segment_node(&s));
 
-      if (left_turn(segments[i].start, segments[i].end, curr->left) > 0) {
-        curr_up = shared_ptr<node>(new trapezoid_node(curr->top, &segments[i], curr->left, curr->right));
+      if (left_turn(s.start, s.end, curr->left) > 0) {
+        curr_up = shared_ptr<node>(new trapezoid_node(curr->top, &s, curr->left, curr->right));
         curr_down = down;
         //set previous
       } else {
         curr_up = up;
-        curr_down = shared_ptr<node>(new trapezoid_node(&segments[i], curr->bottom, curr->left, curr->right));
+        curr_down = shared_ptr<node>(new trapezoid_node(&s, curr->bottom, curr->left, curr->right));
         //set previous
       }
 
-      mid.get()->set_left(up);
-      up.get()->set_previous(mid);
-      mid.get()->set_right(down);
-      down.get()->set_previous(mid);
-
+      //set previous
+      set_children(mid, up, down);
       old = link[curr];
       set_link(old, mid, curr);
 
-      if (left_turn(segments[i].start, segments[i].end, curr->right) > 0)
+      if (left_turn(s.start, s.end, curr->right) > 0)
         curr = curr->right_down;
       else
         curr = curr->right_up;
@@ -169,31 +146,23 @@ void trapezoid_map::add_segments(){
     }
 
 
-    up = shared_ptr<node>(new trapezoid_node(curr->top, &segments[i], segments[i].start, curr->right));
-    down = shared_ptr<node>(new trapezoid_node(&segments[i], curr->bottom, segments[i].start, curr->right));
-    mid = shared_ptr<node>(new segment_node(&segments[i]));
-    auto right = shared_ptr<node>(new trapezoid_node(curr->top, curr->bottom, segments[i].end, curr->right));
-    auto mid2 = shared_ptr<node>(new point_node(segments[i].end));
+    up = shared_ptr<node>(new trapezoid_node(curr->top, &s, s.start, curr->right));
+    down = shared_ptr<node>(new trapezoid_node(&s, curr->bottom, s.start, curr->right));
+    mid = shared_ptr<node>(new segment_node(&s));
+    auto right = shared_ptr<node>(new trapezoid_node(curr->top, curr->bottom, s.end, curr->right));
+    auto mid2 = shared_ptr<node>(new point_node(s.end));
 
-    mid.get()->set_left(up);
-    up.get()->set_previous(mid);
-    mid.get()->set_right(down);
-    down.get()->set_previous(mid);
-
+    //set previous
+    set_children(mid, up, down);
     old = link[curr];
     
-    if (segments[i].end == curr->right) {
-        //set previous
+    if (s.end == curr->right) {
       set_link(old, mid, curr);
-
     } else {
       set_link(old, mid2, curr);
-      mid2.get()->set_left(mid);
-      mid.get()->set_previous(mid2);
-      mid2.get()->set_right(right);
-      right.get()->set_previous(mid2);
+      //set previous
+      set_children(mid2, mid, right);
     }
-  }
 }
 
 
@@ -208,7 +177,9 @@ trapezoid_map::trapezoid_map(int ac, char** av, vector<segment> v, double g) {
   shared_ptr<node> t = shared_ptr<node>(ptr);
   link[ptr->get_trapezoid()] = t;
   root = t;
-  add_segments();
+  for (int i = 0; i < segments.size(); ++i) {
+    add_segment(segments[i]);
+  }
 }
 
 trapezoid_map::~trapezoid_map() {
