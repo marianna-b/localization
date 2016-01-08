@@ -38,8 +38,8 @@ struct trapezoid {
 
   segment *top, *bottom;
   point left, right;
-  trapezoid *right_up, *right_down;
-  trapezoid *left_up, *left_down;
+  trapezoid *right_up = 0, *right_down = 0;
+  trapezoid *left_up = 0, *left_down = 0;
 };
 
 int left_turn(point, point, point);

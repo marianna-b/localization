@@ -12,6 +12,8 @@ struct trapezoid_map {
   ~trapezoid_map();
   void single_trap(trapezoid*, segment*);
   void add_segment(segment&);
+  std::shared_ptr<node> create_trapezoid_node(segment*, segment*, point, point);
+
  
   std::shared_ptr<node> root;
   std::vector<segment> segments;
