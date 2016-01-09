@@ -30,6 +30,11 @@ segment::segment(segment&& s)
   : segment(s.start.x, s.start.y, s.end.x, s.end.y)
 {}
 
+
+segment& segment::operator=(segment&& x) {
+  new (this) segment(move(x));
+}
+
 segment::segment(double a, double b, double c, double d) {
   start = point(a, b);
   end = point(c, d);

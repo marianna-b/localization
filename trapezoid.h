@@ -28,6 +28,7 @@ struct segment {
   segment(double, double, double, double);
   segment(segment const&) = delete;
   segment(segment&&);
+  segment& operator=(segment&&);
   void draw(double, point);
 
   point start, end;

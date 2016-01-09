@@ -1,4 +1,6 @@
 #include "search.h"
+#include <iostream>
+using namespace std;
 
 point_node::point_node(point n){
   p = n;
@@ -9,6 +11,7 @@ int point_node::get_direction(point a, segment* b) {
 }
 
 int point_node::get_direction(point a) {
+  //cout << p.x << " " << p.y << endl;
   if (a < p)
     return 1;
   else

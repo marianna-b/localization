@@ -78,9 +78,9 @@ int TMap_Widget::handle(int event) {
     double x1 = (Fl::event_x()) / scale + map->bound.bottom->start.x - 1.0;
     double y1 = ((HEIGHT - Fl::event_y()) / scale) + map->bound.bottom->start.y - 1.0;
 
+    cout << x1 << " " << y1 << endl;
     segment* s = map->find(point(x1, y1));
     prev = s;
-    cout << x1 << " " << y1 << endl;
     //cerr << s->start.x << " "  << s->start.y << " "  << s->end.x << " " << s->end.y << endl;
     fl_color(FL_RED);
     s->draw(scale, bounds.left);
