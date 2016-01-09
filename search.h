@@ -13,7 +13,7 @@ struct node {
   virtual std::shared_ptr<node> get_left() = 0;
   virtual std::shared_ptr<node> get_right() = 0;
   virtual std::vector<std::shared_ptr<node>> get_previous() = 0;
-  virtual segment* get_segment() = 0;
+  virtual segment* get_segment(trapezoid) = 0;
   virtual void set_previous(std::shared_ptr<node>) = 0;
 };
 
@@ -26,7 +26,7 @@ struct point_node : node {
   std::shared_ptr<node> get_left() override;
   std::shared_ptr<node> get_right() override;
   std::vector<std::shared_ptr<node>> get_previous() override;
-  segment* get_segment() override;
+  segment* get_segment(trapezoid) override;
   void set_previous(std::shared_ptr<node>) override;
 private:
   point p;
@@ -44,7 +44,7 @@ struct segment_node : node {
   std::shared_ptr<node> get_left() override;
   std::shared_ptr<node> get_right() override;
   std::vector<std::shared_ptr<node>> get_previous() override;
-  segment* get_segment() override;
+  segment* get_segment(trapezoid) override;
   void set_previous(std::shared_ptr<node>) override;
 private:
   segment* s;
@@ -62,7 +62,7 @@ struct trapezoid_node : node {
   std::shared_ptr<node> get_left() override;
   std::shared_ptr<node> get_right() override;
   std::vector<std::shared_ptr<node>> get_previous() override;
-  segment* get_segment() override;
+  segment* get_segment(trapezoid) override;
   void set_previous(std::shared_ptr<node>) override;
   trapezoid* get_trapezoid();
   ~trapezoid_node();

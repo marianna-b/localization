@@ -5,14 +5,15 @@
 #include <map>
 
 struct trapezoid_map {
-  trapezoid_map(int, char**, std::vector<segment>, double);
+  trapezoid_map(std::vector<segment>, double);
   segment* find(point);
   trapezoid* find(point, segment*);
-  int visualize();
+  int visualize(int, char**);
   ~trapezoid_map();
   void single_trap(trapezoid*, segment*);
   void add_segment(segment&);
   std::shared_ptr<node> create_trapezoid_node(segment*, segment*, point, point);
+  void set_link(std::shared_ptr<node>, std::shared_ptr<node>, trapezoid*);
 
  
   std::shared_ptr<node> root;
@@ -20,8 +21,6 @@ struct trapezoid_map {
   std::map<trapezoid*, std::shared_ptr<node> > link;
   trapezoid bound;
   double gap;
-  int argc;
-  char** argv;
 };
 
 #endif

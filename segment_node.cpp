@@ -1,14 +1,21 @@
 #include "search.h"
-
+#include <iostream>
+using namespace std;
 
 segment_node::segment_node(segment* n)
   : s(n) {}
 
 int segment_node::get_direction(point p, segment* segm) {
   int l = left_turn(s->start, s->end, p);
+  //cout << "l " << l << endl;
+  //cout << p.x << " " << p.y << endl;
+  //cout << s->start.x << " " << s->start.y << " ";
+  //cout << s->end.x << " " << s->end.y << endl;
   if (l != 0)
-    return 0;
-  if (p == segm->start)
+    return l;
+  //cout << "fu" << endl;
+  //cout << segm->end.x << " " << segm->end.y << endl;
+  if (p == s->start)
     return left_turn(s->start, s->end, segm->end);
   return left_turn(s->start, s->end, segm->start);
 }
@@ -30,7 +37,7 @@ std::shared_ptr<node> segment_node::get_right() {
 std::vector<std::shared_ptr<node>> segment_node::get_previous() {
   return previous;
 }
-segment* segment_node::get_segment() {
+segment* segment_node::get_segment(trapezoid) {
   return s;
 }
 void segment_node::set_previous(std::shared_ptr<node> prev) {

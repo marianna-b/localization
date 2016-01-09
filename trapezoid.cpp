@@ -67,9 +67,9 @@ int left_turn(point a, point b, point c) {
   double x2 = c.x - a.x;
   double y1 = b.y - a.y;
   double res = x1 * y2 - x2 * y1; 
-  if (res > 0.0)
+  if (res > EPS)
     return 1;
-  if (0.0 > res)
+  if (EPS > res)
     return -1;
   return 0;
 }

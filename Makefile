@@ -1,7 +1,7 @@
 #CXX = $(shell fltk-config --cxx)
 DEBUG = -g
 
-CXXFLAGS = -std=c++11 $(shell fltk-config --use-gl --use-images --cxxflags ) -I.
+CXXFLAGS = -std=c++11 $(shell fltk-config --use-gl --use-images --cxxflags ) -I. -D_GLIBCXX_DEBUG -g
 LDFLAGS = $(shell fltk-config --use-gl --use-images --ldflags )
 LDSTATIC = $(shell fltk-config --use-gl --use-images --ldstaticflags )
 LINK = $(CXX)

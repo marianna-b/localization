@@ -35,7 +35,7 @@ std::vector<std::shared_ptr<node>> point_node::get_previous(){
   return previous; 
 }
 
-segment* point_node::get_segment(){
+segment* point_node::get_segment(trapezoid){
   return p.get_segment();
 }
 

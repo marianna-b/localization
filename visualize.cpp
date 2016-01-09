@@ -52,28 +52,41 @@ void TMap_Widget::draw() {
     segments[i].draw(scale, bounds.left);
   }
   
-  segment b(200, 200, 300, 300);
+  /*segment b(200, 200, 300, 300);
   segment a(100, 100, 400, 100);
   point c(250, 250);
   point d(300, 300);
   trapezoid t(&b, &a, c, d);
 
-
   t.draw(scale, bounds.left);
+  */
   bounds.draw(scale, bounds.left);
 }
 
 int TMap_Widget::handle(int event) {
+
+
+   
+
+  
   switch(event) {
   case FL_PUSH:
     fl_color(FL_BLACK);
     if (prev != 0) 
       prev->draw(scale, bounds.left);
-    segment* s = map->find(point(Fl::event_x(), Fl::event_y()));
+
+    double x1 = (Fl::event_x()) / scale + map->bound.bottom->start.x - 1.0;
+    double y1 = ((HEIGHT - Fl::event_y()) / scale) + map->bound.bottom->start.y - 1.0;
+
+    segment* s = map->find(point(x1, y1));
+    prev = s;
+    cout << x1 << " " << y1 << endl;
+    //cerr << s->start.x << " "  << s->start.y << " "  << s->end.x << " " << s->end.y << endl;
     fl_color(FL_RED);
     s->draw(scale, bounds.left);
     return 1;
   }
+  return 0;
 }
 
 double calc_scale(trapezoid t) {
@@ -89,7 +102,7 @@ double calc_scale(trapezoid t) {
     
 }
 
-int trapezoid_map::visualize() {
+int trapezoid_map::visualize(int argc, char** argv) {
   Fl_Window *window = new Fl_Window(WIDTH, HEIGHT);
   TMap_Widget *tmap = new TMap_Widget(0, 0, WIDTH, HEIGHT);
 

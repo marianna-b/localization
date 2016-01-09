@@ -10,6 +10,6 @@ int main(int argc, char** argv) {
     v.emplace_back(a, b, c, d);
   }
 
-  trapezoid_map map(argc, argv, move(v), 30.0);
-  return map.visualize();
+  trapezoid_map map(move(v), 10.0);
+  return map.visualize(argc, argv);
 }
