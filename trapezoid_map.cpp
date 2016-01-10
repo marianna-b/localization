@@ -326,6 +326,7 @@ void trapezoid_map::add_segment(segment& s){
       curr_up1 = new trapezoid_node(curr->top, &s, curr->left, s.end);
       curr_up = shared_ptr<node>(curr_up1);
       link[curr_up1->get_trapezoid()] = curr_up;
+      up1->get_trapezoid()->right = curr->left;
       
       curr_down = down;
       curr_down1 = down1;
@@ -346,6 +347,7 @@ void trapezoid_map::add_segment(segment& s){
       curr_down1 = new trapezoid_node(&s, curr->bottom, curr->left, s.end);
       curr_down = shared_ptr<node>(curr_down1);
       link[curr_down1->get_trapezoid()] = curr_down;
+      down1->get_trapezoid()->right = curr->left;
 
       set_right_up(down1->get_trapezoid(), curr_down1->get_trapezoid());
       if (curr->left_down != 0)

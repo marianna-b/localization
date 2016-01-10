@@ -21,7 +21,6 @@ bool do_intersect(segment& a, segment& b) {
 
 
 int main(int argc, char** argv) {
-  /*
   int n = 50;
   vector <segment> v;
   double lower_bound = 0;
@@ -29,6 +28,7 @@ int main(int argc, char** argv) {
 
   uniform_real_distribution<double> unif(lower_bound,upper_bound);
   default_random_engine re;
+  re.seed(time(NULL));
   while (v.size() < n) {
     bool f = true;
     segment s(unif(re), unif(re), unif(re), unif(re));
@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
       cout << s.start.x << " " << s.start.y << " " << s.end.x << " " << s.end.y << endl;
     }
   }
-  */
+  /*
   vector <segment> v;
   double a, b, c, d;
   while (cin >> a >> b >> c >> d) {
@@ -51,8 +51,9 @@ int main(int argc, char** argv) {
   random_device rd;
   mt19937 g(rd());
  
-  //shuffle(v.begin(), v.end(), g);
+  shuffle(v.begin(), v.end(), g);
   
+  */
   trapezoid_map map(move(v), 10.0);
   return map.visualize(argc, argv);
 }
