@@ -73,7 +73,6 @@ int left_turn(point a, point b, point c) {
   double x2 = c.x - a.x;
   double y1 = b.y - a.y;
   double res = x1 * y2 - x2 * y1; 
-  cout << res << endl;
   if (res > EPS)
     return 1;
   if (-EPS > res)

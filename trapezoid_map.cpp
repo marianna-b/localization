@@ -24,9 +24,7 @@ trapezoid count_bounds(vector <segment> &v, double gap) {
     max_x += gap;
     max_y += gap;
   }
-
   
-  //cout << min_x << " " << max_x << " " << min_y << " " << max_y << endl;
   segment* top = new segment(min_x, max_y, max_x, max_y);
   segment* bottom = new segment(min_x, min_y, max_x, min_y);
   return trapezoid(top, bottom, bottom->start, top->end);
@@ -117,7 +115,6 @@ void trapezoid_map::single_trap(trapezoid* t, segment* s) {
   auto old = link[t];
   
   if (s->start == t->left && s->end == t->right) {
-    //cout << "1\n";
     set_right_up(t->left_up, up1->get_trapezoid());
     set_right_down(t->left_down, down1->get_trapezoid());
 
@@ -129,7 +126,6 @@ void trapezoid_map::single_trap(trapezoid* t, segment* s) {
   }
 
   if (s->start == t->left) {
-    //cout << "2\n";
 
     link[right1->get_trapezoid()] = right;
 
@@ -146,7 +142,6 @@ void trapezoid_map::single_trap(trapezoid* t, segment* s) {
     set_link(old, mid2, t);
 
   } else if (s->end == t->right) {
-    //cout << "3\n";
     link[left1->get_trapezoid()] = left;
 
     set_left_up(t->right_up, up1->get_trapezoid());
@@ -162,7 +157,6 @@ void trapezoid_map::single_trap(trapezoid* t, segment* s) {
     set_link(old, mid1, t);
 
   } else {
-    //cout << "4\n";
     link[right1->get_trapezoid()] = right;
     link[left1->get_trapezoid()] = left;
 
@@ -185,18 +179,10 @@ void trapezoid_map::single_trap(trapezoid* t, segment* s) {
 }
 
 void trapezoid_map::add_segment(segment& s){
-  cout << "lolo" << endl;
-  cout << s.start.x << " " << s.start.y << " " << s.end.x << " " << s.end.y << endl;
-  //cout << "lolo" << endl;
     trapezoid* fst = find(s.start, &s);
     trapezoid* curr = fst;
 
-    //cout << fst->right.x << " " << fst->right.y << endl;
-    //cout << "lol" << endl;
-    //cerr << fst->top->start.x << " "  << fst->top->start.y << " "  << fst->top->end.x << " " << fst->top->end.y << endl;
-    //cerr << fst->bottom->start.x << " "  << fst->bottom->start.y << " "  << fst->bottom->end.x << " " << fst->bottom->end.y << endl;
     if (s.end < fst->right || fst->right == s.end) {
-      //cout << "fuck" << endl;
       single_trap(fst, &s);
       return;
     } 
@@ -220,12 +206,10 @@ void trapezoid_map::add_segment(segment& s){
 
     auto old = link[fst];
     if (s.start == fst->left) {
-      //cout << "%" << endl;
       set_right_up(fst->left_up, up1->get_trapezoid());
       set_right_down(fst->left_down, down1->get_trapezoid());
       set_link(old, mid, fst);
     } else {
-      //cout << "%%" << endl;
       link[left1->get_trapezoid()] = left;
       set_right_up(fst->left_up, left1->get_trapezoid());
       set_right_down(fst->left_down, left1->get_trapezoid());
@@ -238,38 +222,24 @@ void trapezoid_map::add_segment(segment& s){
     }
 
     if (left_turn(s.start, s.end, fst->right) > 0) {
-      //cout << "1" << endl;
       curr = fst->right_down;
       if (fst->right_up != 0)
         set_right_up(up1->get_trapezoid(), fst->right_up);
     } else {
-      //cout << "2" << endl;
       curr = fst->right_up;
       if (fst->right_down != 0)
         set_right_down(down1->get_trapezoid(), fst->right_down);
     }
-
 
     shared_ptr<node> curr_up;
     shared_ptr<node> curr_down;
     trapezoid_node* curr_up1;
     trapezoid_node* curr_down1;
 
-
-    
-    //cout << curr->right.x << " " << curr->right.y << endl;
-    
     while (!(s.end < curr->right || curr->right == s.end)) {
-      //cout << "fuf" << endl;
-
-      //cerr << curr->top->start.x << " "  << curr->top->start.y << " "  << curr->top->end.x << " " << curr->top->end.y << endl;
-      //cerr << curr->bottom->start.x << " "  << curr->bottom->start.y << " "  << curr->bottom->end.x << " " << curr->bottom->end.y << endl;
-
-      
       mid = shared_ptr<node>(new segment_node(&s));
 
       if (left_turn(s.start, s.end, curr->left) > 0) {
-        //cout << "-" << endl;
         curr_up1 = new trapezoid_node(curr->top, &s, curr->left, curr->right);
         curr_up = shared_ptr<node>(curr_up1);
         link[curr_up1->get_trapezoid()] = curr_up;
@@ -283,7 +253,6 @@ void trapezoid_map::add_segment(segment& s){
           set_left_up(curr_up1->get_trapezoid(), curr->left_up);
       } else {
 
-        //cout << "--" << endl;
         curr_up = up;
         curr_up1 = up1;
 
@@ -302,12 +271,10 @@ void trapezoid_map::add_segment(segment& s){
       set_link(old, mid, curr);
 
       if (left_turn(s.start, s.end, curr->right) > 0) {
-        //cout << "?" << endl;
         if (curr->right_up != 0)
           set_right_up(curr_up1->get_trapezoid(), curr->right_up);
         curr = curr->right_down;
       } else {
-        //cout << "??" << endl;
         if (curr->right_down != 0)
           set_right_down(curr_down1->get_trapezoid(), curr->right_down);
         curr = curr->right_up;
@@ -322,7 +289,6 @@ void trapezoid_map::add_segment(segment& s){
     mid = shared_ptr<node>(new segment_node(&s));
 
     if (left_turn(s.start, s.end, curr->left) > 0) {
-      //cout << "-" << endl;
       curr_up1 = new trapezoid_node(curr->top, &s, curr->left, s.end);
       curr_up = shared_ptr<node>(curr_up1);
       link[curr_up1->get_trapezoid()] = curr_up;
@@ -337,7 +303,6 @@ void trapezoid_map::add_segment(segment& s){
       if (curr->left_up != 0)
         set_left_up(curr_up1->get_trapezoid(), curr->left_up);
     } else {
-      //cout << "--" << endl;
 
       curr_up = up;
       curr_up1 = up1;
@@ -399,7 +364,6 @@ segment* trapezoid_map::find(point p){
   std::shared_ptr<node> curr(root);
   int res;
   while ((res = curr.get()->get_direction(p)) != 0) {
-    //cout << res << endl;
     if (res > 0)
       curr = curr.get()->get_left();
     else
@@ -412,7 +376,6 @@ trapezoid* trapezoid_map::find(point p, segment* s){
   std::shared_ptr<node> curr(root);
   int res;
   while ((res = curr.get()->get_direction(p, s)) != 0) {
-    //cout << res << endl;
     if (res > 0)
       curr = curr.get()->get_left();
     else

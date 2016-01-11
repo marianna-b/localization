@@ -31,10 +31,6 @@ std::vector<std::shared_ptr<node>> trapezoid_node::get_previous(){
   return previous;
 }
 segment* trapezoid_node::get_segment(trapezoid bound) {
-  //cerr << "UFO" << endl;
-  //cerr << t->top->start.x << " "  << t->top->start.y << " "  << t->top->end.x << " " << t->top->end.y << endl;
-  //cerr << t->bottom->start.x << " "  << t->bottom->start.y << " "  << t->bottom->end.x << " " << t->bottom->end.y << endl;
-
   if (bound.top != t->top)
     return t->top;
   if (bound.bottom != t->bottom)

@@ -86,6 +86,5 @@ int main(int argc, char** argv) {
   cerr << "Built" << endl;
   
   */
-  //return 0;
   return map.visualize(argc, argv);
 }
