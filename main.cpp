@@ -19,10 +19,6 @@ bool do_intersect(segment& a, segment& b) {
       && (left_turn(b.start, b.end, a.start) * left_turn(b.start, b.end, a.end) <= 0);
 }
 
-bool check(segment* s, point p) {
-
-}
-
 
 int main(int argc, char** argv) {
   int n = 100;
@@ -49,23 +45,24 @@ int main(int argc, char** argv) {
   random_device rd;
   mt19937 g(rd());
   shuffle(v.begin(), v.end(), g);
-  trapezoid_map map(move(v), 10.0);
+  trapezoid_map map(move(v), 9.0);
   cerr << "Built" << endl;
    
   default_random_engine re2;
   re2.seed(time(NULL));
-  vector <segment> v2;
 
   for (int i = 0; i < 100000; ++i) {
     point p = point(unif(re2), unif(re2));
-    //cerr << p.x << " " << p.y << endl;
     segment* s = map.find(p);
 
     segment s2(p.x, p.y, p.x, p.projection(s));
-    for (int j = 0; j < v.size(); ++j) {
-      if (do_intersect(*s, s2)) {
-        cerr << "Fail " << p.x << " " << p.y << endl;
-        return 0;
+    for (int j = 0; j < map.segments.size(); ++j) {
+      if (&map.segments[j] != s && do_intersect(map.segments[j], s2)) {
+        if (map.segments[j].start == s2.end || map.segments[j].end == s2.start
+          || map.segments[j].start == s2.start || map.segments[j].end == s2.end)
+          continue;
+            cout << "Fail " << p.x << " " << p.y << endl;
+            return -1;
       }
     }
   }
@@ -86,5 +83,6 @@ int main(int argc, char** argv) {
   cerr << "Built" << endl;
   
   */
-  return map.visualize(argc, argv);
+  //return map.visualize(argc, argv);
+  return 0;
 }

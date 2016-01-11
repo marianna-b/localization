@@ -2,8 +2,9 @@
 #include <iostream>
 using namespace std;
 
-segment_node::segment_node(segment* n)
-  : s(n) {}
+segment_node::segment_node(segment* n){
+  s = n;
+}
 
 int segment_node::get_direction(point p, segment* segm) {
   int l = left_turn(s->start, s->end, p);

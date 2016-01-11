@@ -6,7 +6,7 @@
 struct segment;
 struct trapezoid;
 
-const double EPS = 1e-9;
+const double EPS = 1e-12;
 
 struct point {
   point();

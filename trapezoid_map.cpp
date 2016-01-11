@@ -356,8 +356,8 @@ trapezoid_map::trapezoid_map(vector<segment> v, double g) {
 }
 
 trapezoid_map::~trapezoid_map() {
-  free(bound.top);
-  free(bound.bottom);
+  delete(bound.top);
+  delete(bound.bottom);
 }
 
 segment* trapezoid_map::find(point p){
