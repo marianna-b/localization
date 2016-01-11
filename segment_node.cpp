@@ -10,6 +10,7 @@ int segment_node::get_direction(point p, segment* segm) {
   //cout << "l " << l << endl;
   //cout << p.x << " " << p.y << endl;
   //cout << s->start.x << " " << s->start.y << " " << s->end.x << " " << s->end.y << endl;
+
   if (l != 0)
     return l;
   //cout << "fu" << endl;
