@@ -35,25 +35,25 @@ void trapezoid_map::set_link(shared_ptr<node> old, shared_ptr<node> mid, trapezo
     root = mid;
   }
   
-  auto old_prev = old.get()->get_previous();
+  auto old_prev = old->get_previous();
   for (int i = 0; i < old_prev.size(); ++i) {
-    node* curr = old_prev[i].get()->get_left().get();
+    node* curr = old_prev[i]->get_left().get();
     auto r = dynamic_cast<trapezoid_node*>(curr);
     
     if (r != NULL && r->get_trapezoid() == t) {
-      old_prev[i].get()->set_left(mid);
+      old_prev[i]->set_left(mid);
     } else {
-      old_prev[i].get()->set_right(mid);
+      old_prev[i]->set_right(mid);
     }
-    mid.get()->set_previous(old_prev[i]);
+    mid->set_previous(old_prev[i]);
   }
 }
 
 void set_children(shared_ptr<node> mid, shared_ptr<node> up, shared_ptr<node> down) {
-  mid.get()->set_left(up);
-  up.get()->set_previous(mid);
-  mid.get()->set_right(down);
-  down.get()->set_previous(mid);
+  mid->set_left(up);
+  up->set_previous(mid);
+  mid->set_right(down);
+  down->set_previous(mid);
 }
 
 void set_right_up(trapezoid* curr1, trapezoid* curr2) {
@@ -363,23 +363,23 @@ trapezoid_map::~trapezoid_map() {
 segment* trapezoid_map::find(point p){
   std::shared_ptr<node> curr(root);
   int res;
-  while ((res = curr.get()->get_direction(p)) != 0) {
+  while ((res = curr->get_direction(p)) != 0) {
     if (res > 0)
-      curr = curr.get()->get_left();
+      curr = curr->get_left();
     else
-      curr = curr.get()->get_right();
+      curr = curr->get_right();
   }
-  return curr.get()->get_segment(bound);
+  return curr->get_segment(bound);
 }
 
 trapezoid* trapezoid_map::find(point p, segment* s){
   std::shared_ptr<node> curr(root);
   int res;
-  while ((res = curr.get()->get_direction(p, s)) != 0) {
+  while ((res = curr->get_direction(p, s)) != 0) {
     if (res > 0)
-      curr = curr.get()->get_left();
+      curr = curr->get_left();
     else
-      curr = curr.get()->get_right();
+      curr = curr->get_right();
   }
   
   auto r = dynamic_cast<trapezoid_node*>(curr.get());
