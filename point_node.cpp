@@ -17,30 +17,6 @@ int point_node::get_direction(point a) {
     return -1;
 }
 
-void point_node::set_left(std::shared_ptr<node> a){
-  left = a;
-}
-
-void point_node::set_right(std::shared_ptr<node> b){
-  right = b;
-}
-
-std::shared_ptr<node> point_node::get_left(){
-  return left;
-}
-
-std::shared_ptr<node> point_node::get_right(){
-  return right;
-}
-
-std::vector<std::shared_ptr<node>> point_node::get_previous(){
-  return previous; 
-}
-
 segment* point_node::get_segment(trapezoid){
   return p.get_segment();
-}
-
-void point_node::set_previous(std::shared_ptr<node> prev){
-    previous.push_back(prev);
 }

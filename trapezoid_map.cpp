@@ -51,9 +51,9 @@ void trapezoid_map::set_link(shared_ptr<node> old, shared_ptr<node> mid, trapezo
 
 void set_children(shared_ptr<node> mid, shared_ptr<node> up, shared_ptr<node> down) {
   mid->set_left(up);
-  up->set_previous(mid);
+  up->set_previous(mid.get());
   mid->set_right(down);
-  down->set_previous(mid);
+  down->set_previous(mid.get());
 }
 
 void set_right_up(trapezoid* curr1, trapezoid* curr2) {

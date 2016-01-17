@@ -7,8 +7,8 @@ LDSTATIC = $(shell fltk-config --use-gl --use-images --ldstaticflags )
 LINK = $(CXX)
 
 TARGET = main 
-OBJS = main.o visualize.o trapezoid_map.o trapezoid.o segment_node.o point_node.o trapezoid_node.o 
-SRCS = visualize.cpp trapezoid_map.cpp trapezoid.cpp segment_node.cpp point_node.cpp trapezoid_node.cpp main.cpp
+OBJS = main.o search.o visualize.o trapezoid_map.o trapezoid.o segment_node.o point_node.o trapezoid_node.o 
+SRCS = visualize.cpp search.cpp trapezoid_map.cpp trapezoid.cpp segment_node.cpp point_node.cpp trapezoid_node.cpp main.cpp
 
 all: $(TARGET)
 

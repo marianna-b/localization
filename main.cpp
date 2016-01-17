@@ -21,10 +21,11 @@ bool do_intersect(segment& a, segment& b) {
 
 
 int main(int argc, char** argv) {
+  //for(int k = 0; k < 5; k++){
   int n = 100;
   vector <segment> v;
   double lower_bound = 0;
-  double upper_bound = 1000;
+  double upper_bound = 100000;
 
   uniform_real_distribution<double> unif(lower_bound,upper_bound);
   default_random_engine re;
@@ -38,20 +39,21 @@ int main(int argc, char** argv) {
     }
     if (f) {
       v.emplace_back(move(s));
-      cout << s.start.x << " " << s.start.y << " " << s.end.x << " " << s.end.y << endl;
+      //cout << s.start.x << " " << s.start.y << " " << s.end.x << " " << s.end.y << endl;
     }
   }
   
+  cerr << "Generated" << endl;
   random_device rd;
   mt19937 g(rd());
   shuffle(v.begin(), v.end(), g);
   trapezoid_map map(move(v), 9.0);
   cerr << "Built" << endl;
    
-  default_random_engine re2;
+  /*default_random_engine re2;
   re2.seed(time(NULL));
 
-  for (int i = 0; i < 100000; ++i) {
+  for (int i = 0; i < 10000; ++i) {
     point p = point(unif(re2), unif(re2));
     segment* s = map.find(p);
 
@@ -65,9 +67,10 @@ int main(int argc, char** argv) {
             return -1;
       }
     }
-  }
+    }*/
+  map.visualize(argc, argv);
   cerr << "OK" << endl;
-   
+  //} 
   /*
   vector <segment> v;
   double a, b, c, d;
@@ -83,6 +86,5 @@ int main(int argc, char** argv) {
   cerr << "Built" << endl;
   
   */
-  //return map.visualize(argc, argv);
   return 0;
 }

@@ -98,5 +98,8 @@ int trapezoid_map::visualize(int argc, char** argv) {
 
   window->end();
   window->show(argc, argv);
-  return Fl::run();
+  int res = Fl::run();
+  delete(tmap);
+  delete(window);
+  return res;
 }
