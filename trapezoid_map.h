@@ -10,7 +10,7 @@ struct trapezoid_map {
   trapezoid* find(point, segment*);
   int visualize(int, char**);
   ~trapezoid_map();
-  void single_trap(trapezoid*, segment*);
+  void single_trapezoid(trapezoid*, segment*);
   void add_segment(segment&);
   std::shared_ptr<node> create_trapezoid_node(segment*, segment*, point, point);
   void set_link(std::shared_ptr<node>, std::shared_ptr<node>, trapezoid*);

@@ -88,7 +88,7 @@ shared_ptr<node> trapezoid_map::create_trapezoid_node(segment* a, segment* b, po
   return t;
 }
 
-void trapezoid_map::single_trap(trapezoid* t, segment* s) {
+void trapezoid_map::single_trapezoid(trapezoid* t, segment* s) {
   auto up1 = new trapezoid_node(t->top, s, s->start, s->end);
   auto up = shared_ptr<node>(up1);
 
@@ -183,7 +183,7 @@ void trapezoid_map::add_segment(segment& s){
     trapezoid* curr = fst;
 
     if (s.end < fst->right || fst->right == s.end) {
-      single_trap(fst, &s);
+      single_trapezoid(fst, &s);
       return;
     } 
 

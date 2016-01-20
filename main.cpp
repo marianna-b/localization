@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
   trapezoid_map map(move(v), 9.0);
   cerr << "Built" << endl;
    
-  /*default_random_engine re2;
+  default_random_engine re2;
   re2.seed(time(NULL));
 
   for (int i = 0; i < 10000; ++i) {
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
             return -1;
       }
     }
-    }*/
+    }
   map.visualize(argc, argv);
   cerr << "OK" << endl;
   //} 
